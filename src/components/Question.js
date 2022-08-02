@@ -7,21 +7,35 @@ function Question({ question, onAnswered }) {
   useEffect(
     () => {
      const timer = setTimeout(() => {
-        setTimeRemaining((timeRemaining) => {
-          timeRemaining -1
-        },1000)
+
+        if(timeRemaining === 10) {
+          handleAnswer()
+        }
+        if(timeRemaining > 0) {
+          setTimeRemaining((timeRemaining) => timeRemaining -1)
+        } else {
+          setTimeRemaining(10)
+        }
         }, 1000)
     
       return function () {
          clearTimeout(timer)
       } 
-    },[]
+    },[timeRemaining]
   )
 
   function handleAnswer(isCorrect) {
     setTimeRemaining(10);
     onAnswered(isCorrect);
   }
+
+  useEffect (() => {
+     const timer2 = setTimeout(()=> {
+       if(timeRemaining === 10){
+         handleAnswer()
+       }
+     })
+  },[])
 
   const { id, prompt, answers, correctIndex } = question;
 
